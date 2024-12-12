@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Markup {
-    let elements: [Element]
+    public let elements: [Element]
     public func html() -> String {
         elements
             .map { $0.html() }
