@@ -24,10 +24,31 @@ struct Parser {
     
     mutating func parse() throws(ParserError) -> Markup {
         var elements = [Element]()
+        
+        let frontMatter = try parseFrontMatter()
+        
         while !isAtEnd {
             elements.append(try parseElement())
         }
-        return Markup(elements: elements)
+        return Markup(elements: elements, frontMatter: frontMatter)
+    }
+    
+    mutating func parseFrontMatter() throws(ParserError) -> [String: String] {
+        guard match([.minus3]) else {
+            return [:]
+        }
+        try expect([.lineEnding])
+
+        var frontMatter = [String: String]()
+        while current.type != .minus3 {
+            let text = current.string.split(separator: ":")
+            let key = String(text[0])
+            let val = String(text[1]).trimmingCharacters(in: .whitespaces)
+            frontMatter[key] = val
+            advance()
+            try expect([.lineEnding])
+        }
+        return frontMatter
     }
     
     mutating func parseElement() throws(ParserError) -> Element {

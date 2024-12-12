@@ -66,4 +66,20 @@ look at this paragraaaaph
         #expect(p2.content == "#not a heading")
         #expect(p3.content == "look at this paragraaaaph")
     }
+    
+    @Test func testFrontMatter() throws {
+        let input = """
+---
+title: test title
+date: 01-08-2025
+---
+
+# header
+
+paragraph
+"""
+        let markup = try parse(input: input)
+        #expect(markup.frontMatter["title"] == "test title")
+        #expect(markup.frontMatter["date"] == "01-08-2025")
+    }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 public struct Markup {
     public let elements: [Element]
+    public let frontMatter: [String: String]
     public func html() -> String {
         elements
             .map { $0.html() }
