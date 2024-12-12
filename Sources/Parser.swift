@@ -48,6 +48,7 @@ struct Parser {
             advance()
             try expect([.lineEnding])
         }
+        try expect([.minus3])
         return frontMatter
     }
     
