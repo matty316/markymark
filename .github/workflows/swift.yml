@@ -15,9 +15,13 @@ jobs:
     runs-on: macos-latest
 
     steps:
+  # You may pin to the exact commit or the version.
+  # uses: swift-actions/setup-swift@e1dca7c4a36344146bbc2803f0d538462477bb37
+    - uses: swift-actions/setup-swift@v2.0.0
+      with:
+        swift-version: "6.0"
+          
     - uses: actions/checkout@v4
-      with: 
-       swift-version: "6.0"
     - name: Build
       run: swift build -v
     - name: Run tests
