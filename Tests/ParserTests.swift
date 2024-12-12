@@ -81,5 +81,6 @@ paragraph
         let markup = try parse(input: input)
         #expect(markup.frontMatter["title"] == "test title")
         #expect(markup.frontMatter["date"] == "01-08-2025")
+        #expect(markup.elements[0].html() == "<h1>header</h1>")
     }
 }

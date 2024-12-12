@@ -27,6 +27,10 @@ struct Parser {
         
         let frontMatter = try parseFrontMatter()
         
+        while current.type == .lineEnding {
+            advance()
+        }
+        
         while !isAtEnd {
             elements.append(try parseElement())
         }
