@@ -19,8 +19,8 @@ _ __ ___
 ` `` ```
 
 word 2 23
-2
-23
+2. this is a list
+23 this is not
 ####### not a heading
 """
         let exp = [
@@ -68,9 +68,10 @@ word 2 23
             Token(line: 9, type: .lineEnding),
             Token(string: "word 2 23", line: 10, type: .text),
             Token(line: 10, type: .lineEnding),
-            Token(string: "2", line: 11, type: .num),
+            Token(string: "2.", line: 11, type: .num),
+            Token(string: "this is a list", line: 11, type: .text),
             Token(line: 11, type: .lineEnding),
-            Token(string: "23", line: 12, type: .num),
+            Token(string: "23 this is not", line: 12, type: .text),
             Token(line: 12, type: .lineEnding),
             Token(string: "####### not a heading", line: 13, type: .text),
             Token(line: 13, type: .eof)

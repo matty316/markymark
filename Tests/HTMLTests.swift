@@ -93,5 +93,68 @@ look at this paragraaaaph
         let exp = "<h1>heading 1</h1><h2>heading 2</h2><h3>heading 3</h3><h4>heading 4</h4><h5>heading 5</h5><h6>heading 6</h6><p>####### not a heading</p><p>#not a heading</p><p>look at this paragraaaaph</p>"
         #expect(html == exp)
     }
+    
+    @Test(arguments: [
+        """
+- item 1
+- item 2
+- item 3
+""","""
++ item 1
++ item 2
++ item 3
+""","""
+* item 1
+* item 2
+* item 3
+""",
+    ]) func testUnorderedLists(input: String) throws {
+        let html = try getHTML(input: input)
+        let exp = """
+<ul>
+\t<li>item 1</li>
+\t<li>item 2</li>
+\t<li>item 3</li>
+</ul>
+"""
+        #expect(html == exp)
+    }
+    
+    @Test(arguments: [
+        """
+1. item 1
+2. item 2
+3. item 3
+""",
+    ]) func testOrderedLists(input: String) throws {
+        let html = try getHTML(input: input)
+        let exp = """
+<ol>
+\t<li>item 1</li>
+\t<li>item 2</li>
+\t<li>item 3</li>
+</ol>
+"""
+        #expect(html == exp)
+    }
+    
+    @Test(arguments: zip([
+        "paragraph with *emphasis*",
+        "paragraph with _emphasis_",
+        "paragraph with **emphasis**",
+        "paragraph with __emphasis__",
+        "paragraph with ***emphasis***",
+        "paragraph with ___emphasis___",
+    ], [
+        "<p>paragraph with <em>emphasis</em></p>",
+        "<p>paragraph with <em>emphasis</em></p>",
+        "<p>paragraph with <strong>emphasis</strong></p>",
+        "<p>paragraph with <strong>emphasis</strong></p>",
+        "<p>paragraph with <em><strong>emphasis</strong></em></p>",
+    ]))
+    func testParagraphWithEmphasis(input: String, exp: String) throws {
+        let html = try getHTML(input: input)
+        #expect(html == exp)
+    }
 }
 

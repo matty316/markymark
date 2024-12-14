@@ -148,8 +148,13 @@ struct Scanner {
             advance()
         }
         
-        let string = String(input[start..<position])
-        return Token(string: string, line: line, type: .num)
+        if peek == "." {
+            advance()
+            let string = String(input[start..<position])
+            return Token(string: string, line: line, type: .num)
+        }
+        
+        return readText()
     }
     
     func token(_ type: TokenType) -> Token {

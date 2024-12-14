@@ -33,22 +33,34 @@ public enum LineType: String {
     case h1, h2, h3, h4, h5, h6, p, unorderedListItem, orderedListItem, blank
 }
 
+public struct Content {
+    let string: String
+    func html() -> String {
+        Emitter.emitHtml(self)
+    }
+}
+
 public struct Line: Element {
     let lineType: LineType
-    let content: String
+    let content: Content
     
     public func html() -> String {
         switch lineType {
         case .h1, .h2, .h3, .h4, .h5, .h6, .p:
-            "<\(lineType.rawValue)>\(content)</\(lineType.rawValue)>"
+            "<\(lineType.rawValue)>\(content.html())</\(lineType.rawValue)>"
         default: ""
         }
     }
 }
 
 public struct List: Element {
-    let lines: [Line]
+    public let lines: [Line]
+    public let ordered: Bool
     public func html() -> String {
-        ""
+        """
+<\(ordered ? "ol" : "ul")>
+\(lines.map { "\t<li>\($0.content.html())</li>" }.joined(separator: "\n") )
+</\(ordered ? "ol" : "ul")>
+"""
     }
 }

@@ -57,16 +57,41 @@ struct Parser {
     }
     
     mutating func parseElement() throws(ParserError) -> Element {
-        if match([.star, .plus, .minus]) { return try parseList() }
+        if match([.star, .plus, .minus]) { return try parseUnorderedList() }
+        if match([.num]) { return try parseOrderedList() }
         return try parseLine()
     }
     
-    mutating func parseList() throws(ParserError) -> Element {
-        Line(lineType: .h1, content: "")
+    mutating func parseUnorderedList() throws(ParserError) -> Element {
+        var lineItems = [Line]()
+        while true {
+            let text = current.string
+            advance()
+            lineItems.append(Line(lineType: .unorderedListItem, content: Content(string: text)))
+            try expect([.lineEnding, .eof])
+            if !match([.plus, .star, .minus]) {
+                break
+            }
+        }
+        return List(lines: lineItems, ordered: false)
+    }
+    
+    mutating func parseOrderedList() throws(ParserError) -> Element {
+        var lineItems = [Line]()
+        while true {
+            let text = current.string
+            advance()
+            lineItems.append(Line(lineType: .orderedListItem, content: Content(string: text)))
+            try expect([.lineEnding, .eof])
+            if !match([.num]) {
+                break
+            }
+        }
+        return List(lines: lineItems, ordered: true)
     }
     
     mutating func parseLine() throws(ParserError) -> Line {
-        if match([.lineEnding]) { return Line(lineType: .blank, content: "") }
+        if match([.lineEnding]) { return Line(lineType: .blank, content: Content(string: "")) }
         if match([.hash, .hash2, .hash3, .hash4, .hash5, .hash6]) { return try parseHeader() }
         return try parseParagraph()
     }
@@ -78,12 +103,12 @@ struct Parser {
         try expect([.lineEnding, .eof])
         
         return switch type {
-        case .hash: Line(lineType: .h1, content: text)
-        case .hash2: Line(lineType: .h2, content: text)
-        case .hash3: Line(lineType: .h3, content: text)
-        case .hash4: Line(lineType: .h4, content: text)
-        case .hash5: Line(lineType: .h5, content: text)
-        case .hash6: Line(lineType: .h6, content: text)
+        case .hash: Line(lineType: .h1, content: Content(string: text))
+        case .hash2: Line(lineType: .h2, content: Content(string: text))
+        case .hash3: Line(lineType: .h3, content: Content(string: text))
+        case .hash4: Line(lineType: .h4, content: Content(string: text))
+        case .hash5: Line(lineType: .h5, content: Content(string: text))
+        case .hash6: Line(lineType: .h6, content: Content(string: text))
         default: try parseParagraph()
         }
     }
@@ -92,7 +117,7 @@ struct Parser {
         let text = current.string
         advance()
         try expect([.lineEnding, .eof])
-        return Line(lineType: .p, content: text)
+        return Line(lineType: .p, content: Content(string: text))
     }
     
     mutating func advance() {
