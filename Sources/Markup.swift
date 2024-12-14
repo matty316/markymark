@@ -12,6 +12,7 @@ public struct Markup {
     public let frontMatter: [String: String]
     public func html() -> String {
         elements
+            .filter { !$0.html().isEmpty }
             .map { $0.html() }
             .joined(separator: "\n")
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -19,6 +20,7 @@ public struct Markup {
     
     public func min() -> String {
         elements
+            .filter { !$0.html().isEmpty }
             .map { $0.html() }
             .joined()
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -59,7 +61,7 @@ public struct List: Element {
     public func html() -> String {
         """
 <\(ordered ? "ol" : "ul")>
-\(lines.map { "\t<li>\($0.content.html())</li>" }.joined(separator: "\n") )
+\(lines.map { "<li>\($0.content.html())</li>" }.joined(separator: "\n") )
 </\(ordered ? "ol" : "ul")>
 """
     }
