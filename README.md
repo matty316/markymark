@@ -14,3 +14,4 @@ a not very fully featured markdown parser written in swift
 | links        | nah         |
 | blockquotes  | nah         |
 | code         | nah         |
+| images       | nah         |
