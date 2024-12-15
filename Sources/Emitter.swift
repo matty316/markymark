@@ -21,6 +21,8 @@ struct Emitter {
         string = replace(string, "+", with: "<em>", and: "</em>")
         string = replace(string, "_", with: "<em>", and: "</em>")
         
+        string = replaceLinks(string)
+        
         return string
     }
     
@@ -30,6 +32,27 @@ struct Emitter {
         while let range = newString.range(of: pattern) {
             newString = newString.replacingCharacters(in: range, with: openingElement ? opening : closing )
             openingElement.toggle()
+        }
+        return newString
+    }
+    
+    static func replaceLinks(_ string: String) -> String {
+        var newString = string
+        while let lBracket = newString.range(of: "[") {
+            guard let rBracket = newString[lBracket.upperBound...].range(of: "]") else {
+                continue
+            }
+            
+            guard let lParen = newString[rBracket.upperBound...].range(of: "("),
+                    let rParen = newString[lParen.upperBound...].range(of: ")") else {
+                continue
+            }
+            
+            let pattern = newString[lBracket.lowerBound..<rParen.upperBound]
+            let title = newString[lBracket.upperBound..<rBracket.lowerBound]
+            let href = newString[lParen.upperBound..<rParen.lowerBound]
+            let newPattern = "<a href=\"\(href)\">\(title)</a>"
+            newString = newString.replacingOccurrences(of: pattern, with: newPattern)
         }
         return newString
     }
