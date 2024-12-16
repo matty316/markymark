@@ -56,15 +56,15 @@ look at this paragraaaaph
         #expect(p.lineType == .p)
         #expect(p2.lineType == .p)
         #expect(p3.lineType == .p)
-        #expect(h1.content.html() == "heading 1")
-        #expect(h2.content.html() == "heading 2")
-        #expect(h3.content.html() == "heading 3")
-        #expect(h4.content.html() == "heading 4")
-        #expect(h5.content.html() == "heading 5")
-        #expect(h6.content.html() == "heading 6")
-        #expect(p.content.html() == "####### not a heading")
-        #expect(p2.content.html() == "#not a heading")
-        #expect(p3.content.html() == "look at this paragraaaaph")
+        #expect(try h1.content.html() == "heading 1")
+        #expect(try h2.content.html() == "heading 2")
+        #expect(try h3.content.html() == "heading 3")
+        #expect(try h4.content.html() == "heading 4")
+        #expect(try h5.content.html() == "heading 5")
+        #expect(try h6.content.html() == "heading 6")
+        #expect(try p.content.html() == "####### not a heading")
+        #expect(try p2.content.html() == "#not a heading")
+        #expect(try p3.content.html() == "look at this paragraaaaph")
     }
     
     @Test func testFrontMatter() throws {
@@ -81,7 +81,7 @@ paragraph
         let markup = try parse(input: input)
         #expect(markup.frontMatter["title"] == "test title")
         #expect(markup.frontMatter["date"] == "01-08-2025")
-        #expect(markup.elements[0].html() == "<h1>header</h1>")
+        #expect(try markup.elements[0].html() == "<h1>header</h1>")
     }
     
     @Test func testOrderedLists() throws {
@@ -105,10 +105,10 @@ paragraph
         #expect(item2.lineType == .orderedListItem)
         #expect(item3.lineType == .orderedListItem)
         #expect(p.lineType == .p)
-        #expect(item1.content.html() == "item 1")
-        #expect(item2.content.html() == "another item")
-        #expect(item3.content.html() == "last item")
-        #expect(p.content.html() == "1 not part 2. of 1. the list 3.")
+        #expect(try item1.content.html() == "item 1")
+        #expect(try item2.content.html() == "another item")
+        #expect(try item3.content.html() == "last item")
+        #expect(try p.content.html() == "1 not part 2. of 1. the list 3.")
     }
     
     @Test(arguments: ["""
@@ -135,8 +135,8 @@ paragraph
         #expect(item1.lineType == .unorderedListItem)
         #expect(item2.lineType == .unorderedListItem)
         #expect(item3.lineType == .unorderedListItem)
-        #expect(item1.content.html() == "item 1")
-        #expect(item2.content.html() == "another item")
-        #expect(item3.content.html() == "last item")
+        #expect(try item1.content.html() == "item 1")
+        #expect(try item2.content.html() == "another item")
+        #expect(try item3.content.html() == "last item")
     }
 }

@@ -7,8 +7,12 @@
 
 import Foundation
 
+enum EmmiterError: Error {
+    case unterminatedLink
+}
+
 struct Emitter {
-    static func emitHtml(_ content: Content) -> String {
+    static func emitHtml(_ content: Content) throws(EmmiterError) -> String {
         var string = content.string
         
         string = replace(string, "***", with: "<em><strong>", and: "</strong></em>")
@@ -21,7 +25,7 @@ struct Emitter {
         string = replace(string, "+", with: "<em>", and: "</em>")
         string = replace(string, "_", with: "<em>", and: "</em>")
         
-        string = replaceLinks(string)
+        string = try replaceLinks(string)
         
         return string
     }
@@ -36,16 +40,16 @@ struct Emitter {
         return newString
     }
     
-    static func replaceLinks(_ string: String) -> String {
+    static func replaceLinks(_ string: String) throws(EmmiterError) -> String {
         var newString = string
         while let lBracket = newString.range(of: "[") {
             guard let rBracket = newString[lBracket.upperBound...].range(of: "]") else {
-                continue
+                throw .unterminatedLink
             }
             
             guard let lParen = newString[rBracket.upperBound...].range(of: "("),
                     let rParen = newString[lParen.upperBound...].range(of: ")") else {
-                continue
+                throw .unterminatedLink
             }
             
             let pattern = newString[lBracket.lowerBound..<rParen.upperBound]

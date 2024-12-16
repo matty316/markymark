@@ -13,14 +13,14 @@ struct HTMLTests {
         var s = Scanner(input: input)
         var p = Parser(tokens: try s.scan())
         let markup = try p.parse()
-        return markup.html()
+        return try markup.html()
     }
     
     func getHTMLMin(input: String) throws -> String {
         var s = Scanner(input: input)
         var p = Parser(tokens: try s.scan())
         let markup = try p.parse()
-        return markup.min()
+        return try markup.min()
     }
     
     @Test func testLines() throws {
