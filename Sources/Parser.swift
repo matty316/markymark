@@ -58,6 +58,7 @@ struct Parser {
     
     mutating func parseElement() throws(ParserError) -> Element {
         if match([.star, .plus, .minus]) { return try parseUnorderedList() }
+        if match([.gt]) { return try parseBlockQuote() }
         if match([.num]) { return try parseOrderedList() }
         return try parseLine()
     }
@@ -88,6 +89,19 @@ struct Parser {
             }
         }
         return List(lines: lineItems, ordered: true)
+    }
+    
+    mutating func parseBlockQuote() throws(ParserError) -> Element {
+        var lines = [Line]()
+        while true {
+            let line = try parseLine()
+            lines.append(line)
+            if !match([.gt]) {
+                break
+            }
+        }
+        try expect([.lineEnding, .eof])
+        return BlockQuote(lines: lines)
     }
     
     mutating func parseLine() throws(ParserError) -> Line {

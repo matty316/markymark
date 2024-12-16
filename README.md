@@ -12,7 +12,7 @@ a not very fully featured markdown parser written in swift
 | bold             | yah         |
 | italic           | yah         |
 | links            | yah         |
-| blockquotes      | nah         |
+| blockquotes      | yah         |
 | code             | nah         |
 | images           | nah         |
 | horizontal rules | nah         |

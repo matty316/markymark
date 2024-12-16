@@ -139,4 +139,16 @@ paragraph
         #expect(try item2.content.html() == "another item")
         #expect(try item3.content.html() == "last item")
     }
+    
+    @Test func parseBlockquote() throws {
+        let input = """
+> this is a block quote
+> this is a second line of the same quote
+"""
+        
+        let markup = try parse(input: input)
+        let blockQuote = markup.elements[0] as! BlockQuote
+        #expect(blockQuote.lines[0].content.string == "this is a block quote")
+        #expect(blockQuote.lines[1].content.string == "this is a second line of the same quote")
+    }
 }

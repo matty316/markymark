@@ -66,3 +66,14 @@ public struct List: Element {
 """
     }
 }
+
+public struct BlockQuote: Element {
+    public let lines: [Line]
+    public func html() throws -> String {
+        """
+<blockquote>
+\(try lines.map { try $0.html() }.joined(separator: "\n"))
+</blockquote>
+"""
+    }
+}
