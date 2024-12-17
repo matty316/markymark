@@ -24,6 +24,7 @@ struct Emitter {
         string = replace(string, "*", with: "<em>", and: "</em>")
         string = replace(string, "+", with: "<em>", and: "</em>")
         string = replace(string, "_", with: "<em>", and: "</em>")
+        string = replace(string, "`", with: "<code>", and: "</code>")
         
         string = try replaceLinks(string)
         
