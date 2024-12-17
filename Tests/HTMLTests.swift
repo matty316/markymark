@@ -203,6 +203,20 @@ func concat(string1: String, string2: String) {
         #expect(html == expTag)
     }
     
+    @Test(arguments: zip([
+        "\\* this is not a list*",
+        "this is not \\*empasis\\*",
+        "this aint \\`no code\\`"
+    ], [
+        "<p><em> this is not a list</em></p>", //Ummm is this correct? kinda ambiguous. TODO: rtfm
+        "<p>this is not *empasis*</p>",
+        "<p>this aint `no code`</p>"
+        ]))
+    func testEscaping(input: String, exp: String) throws {
+        let html = try getHTML(input: input)
+        #expect(html == exp)
+    }
+    
     @Test func testLinks() throws {
         let input = "this is a paragraph with a link to [sonic the hedgehog](https://www.sonicthehedgehog.com/)"
         let exp = "<p>this is a paragraph with a link to <a href=\"https://www.sonicthehedgehog.com/\">sonic the hedgehog</a></p>"

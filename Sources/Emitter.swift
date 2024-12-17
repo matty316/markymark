@@ -34,8 +34,20 @@ struct Emitter {
     static func replace(_ string: String, _ pattern: String, with opening: String, and closing: String) -> String {
         var newString = string
         var openingElement = true
-        while let range = newString.range(of: pattern) {
+        var start = newString.startIndex
+        
+        while let range = newString[start...].range(of: pattern) {
+            guard range.lowerBound == newString.startIndex || newString[newString.index(before: range.lowerBound)] != "\\" else {
+                let backslash = newString.range(of: "\\")!
+                newString.removeSubrange(backslash)
+                start = range.lowerBound
+                if start >= newString.endIndex {
+                    break
+                }
+                continue
+            }
             newString = newString.replacingCharacters(in: range, with: openingElement ? opening : closing )
+            start = range.lowerBound
             openingElement.toggle()
         }
         return newString

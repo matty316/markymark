@@ -191,10 +191,16 @@ func concat(string1: String, string2: String) {
         #expect(markup.src == exp.src)
     }
     
-    @Test(arguments: ["\\* this is not a list"])
-    func testEscaping(input: String) throws {
+    @Test(arguments: zip([
+        "\\* this is not a list",
+        "this is not \\*empasis\\*"
+    ], [
+        "* this is not a list",
+        "this is not \\*empasis\\*" //We dont process these until the html phase. just test nothing weird happens
+        ]))
+    func testEscaping(input: String, exp: String) throws {
         let markup = try parse(input: input).elements.first as! Line
         #expect(markup.lineType == .p)
-        #expect(markup.content.string == "* this is not a list")
+        #expect(markup.content.string == exp)
     }
 }
