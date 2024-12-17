@@ -60,6 +60,7 @@ struct Parser {
         if match([.star, .plus, .minus]) { return try parseUnorderedList() }
         if match([.gt]) { return try parseBlockQuote() }
         if match([.tick3]) { return try parseCodeBlock() }
+        if match([.minus3, .underscore3, .star3]) { return Line(lineType: .hr, content: Content(string: ""))}
         if match([.num]) { return try parseOrderedList() }
         return try parseLine()
     }

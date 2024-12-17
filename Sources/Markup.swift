@@ -32,7 +32,7 @@ public protocol Element {
 }
 
 public enum LineType: String {
-    case h1, h2, h3, h4, h5, h6, p, unorderedListItem, orderedListItem, blank
+    case h1, h2, h3, h4, h5, h6, p, unorderedListItem, orderedListItem, blank, hr
 }
 
 public struct Content {
@@ -50,6 +50,8 @@ public struct Line: Element {
         switch lineType {
         case .h1, .h2, .h3, .h4, .h5, .h6, .p:
             "<\(lineType.rawValue)>\(try content.html())</\(lineType.rawValue)>"
+        case .hr:
+            "<\(lineType.rawValue)>"
         default: ""
         }
     }

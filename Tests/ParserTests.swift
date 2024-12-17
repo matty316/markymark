@@ -171,4 +171,9 @@ func concat(string1: String, string2: String) {
         let code = markup.elements[0] as! CodeBlock
         #expect(code.text == exp)
     }
+
+    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"]) func testHR(input: String) throws {
+        let markup = try parse(input: input).elements.first as! Line
+        #expect(markup.lineType == .hr)
+    }
 }

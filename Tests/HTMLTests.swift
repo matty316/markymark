@@ -184,6 +184,11 @@ func concat(string1: String, string2: String) {
         #expect(html == exp)
     }
     
+    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"]) func testHR(input: String) throws {
+        let html = try getHTML(input: input)
+        #expect(html == "<hr>")
+    }
+    
     @Test func testLinks() throws {
         let input = "this is a paragraph with a link to [sonic the hedgehog](https://www.sonicthehedgehog.com/)"
         let exp = "<p>this is a paragraph with a link to <a href=\"https://www.sonicthehedgehog.com/\">sonic the hedgehog</a></p>"

@@ -164,6 +164,10 @@ struct Scanner {
             } else {
                 return [token(type3)]
             }
+        } else if count > 3 {
+            if c == "-" || c == "*" || c == "_" {
+                return [token(type3)]
+            }
         }
         return Array(repeating: token(type), count: count)
     }
