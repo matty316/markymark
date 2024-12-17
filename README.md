@@ -14,6 +14,6 @@ a not very fully featured markdown parser written in swift
 | links            | yah         |
 | blockquotes      | yah         |
 | code             | yah         |
-| images           | nah         |
+| images           | yah         |
 | horizontal rules | yah         |
 | escaping         | nah         |
