@@ -163,6 +163,27 @@ look at this paragraaaaph
 """)
     }
     
+    @Test func testCodeBlock() throws {
+        let input = """
+```
+let string = "string"
+func concat(string1: String, string2: String) {
+    print(string1 + string2)
+}
+```
+"""
+        let html = try getHTML(input: input)
+        let exp = """
+<pre><code>
+let string = "string"
+func concat(string1: String, string2: String) {
+    print(string1 + string2)
+}
+</code></pre>
+"""
+        #expect(html == exp)
+    }
+    
     @Test func testLinks() throws {
         let input = "this is a paragraph with a link to [sonic the hedgehog](https://www.sonicthehedgehog.com/)"
         let exp = "<p>this is a paragraph with a link to <a href=\"https://www.sonicthehedgehog.com/\">sonic the hedgehog</a></p>"

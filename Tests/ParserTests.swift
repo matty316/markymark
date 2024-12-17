@@ -151,4 +151,24 @@ paragraph
         #expect(blockQuote.lines[0].content.string == "this is a block quote")
         #expect(blockQuote.lines[1].content.string == "this is a second line of the same quote")
     }
+    
+    @Test func parseCodeBlock() throws {
+        let input = """
+```
+let string = "string"
+func concat(string1: String, string2: String) {
+    print(string1 + string2)
+}
+```
+"""
+        let exp = """
+let string = "string"
+func concat(string1: String, string2: String) {
+    print(string1 + string2)
+}
+"""
+        let markup = try parse(input: input)
+        let code = markup.elements[0] as! CodeBlock
+        #expect(code.text == exp)
+    }
 }

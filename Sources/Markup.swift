@@ -77,3 +77,14 @@ public struct BlockQuote: Element {
 """
     }
 }
+
+public struct CodeBlock: Element {
+    public let text: String
+    public func html() throws -> String {
+        """
+<pre><code>
+\(text)
+</code></pre>
+"""
+    }
+}

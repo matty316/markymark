@@ -16,8 +16,12 @@ struct ScannerTests {
 - -- ---
 * ** ***
 _ __ ___
-` `` ```
-
+` `` 
+```
+func test() {
+    print("hell nah")
+}
+```
 word 2 23
 2. this is a list
 23 this is not
@@ -63,18 +67,25 @@ word 2 23
             Token(line: 7, type: .lineEnding),
             Token(line: 8, type: .tick),
             Token(line: 8, type: .tick2),
-            Token(line: 8, type: .tick3),
             Token(line: 8, type: .lineEnding),
-            Token(line: 9, type: .lineEnding),
-            Token(string: "word 2 23", line: 10, type: .text),
-            Token(line: 10, type: .lineEnding),
-            Token(string: "2.", line: 11, type: .num),
-            Token(string: "this is a list", line: 11, type: .text),
-            Token(line: 11, type: .lineEnding),
-            Token(string: "23 this is not", line: 12, type: .text),
+            Token(line: 9, type: .tick3),
+            Token(string: """
+func test() {
+    print("hell nah")
+}
+""",
+                  line: 12, type: .text),
+            Token(line: 12, type: .tick3),
             Token(line: 12, type: .lineEnding),
-            Token(string: "####### not a heading", line: 13, type: .text),
-            Token(line: 13, type: .eof)
+            Token(string: "word 2 23", line: 13, type: .text),
+            Token(line: 13, type: .lineEnding),
+            Token(string: "2.", line: 14, type: .num),
+            Token(string: "this is a list", line: 14, type: .text),
+            Token(line: 14, type: .lineEnding),
+            Token(string: "23 this is not", line: 15, type: .text),
+            Token(line: 15, type: .lineEnding),
+            Token(string: "####### not a heading", line: 16, type: .text),
+            Token(line: 16, type: .eof)
         ]
         
         var s = Scanner(input: input)

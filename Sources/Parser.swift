@@ -59,6 +59,7 @@ struct Parser {
     mutating func parseElement() throws(ParserError) -> Element {
         if match([.star, .plus, .minus]) { return try parseUnorderedList() }
         if match([.gt]) { return try parseBlockQuote() }
+        if match([.tick3]) { return try parseCodeBlock() }
         if match([.num]) { return try parseOrderedList() }
         return try parseLine()
     }
@@ -102,6 +103,14 @@ struct Parser {
         }
         try expect([.lineEnding, .eof])
         return BlockQuote(lines: lines)
+    }
+    
+    mutating func parseCodeBlock() throws(ParserError) -> Element {
+        let text = current.string
+        advance()
+        try expect([.tick3])
+        try expect([.lineEnding, .eof])
+        return CodeBlock(text: text)
     }
     
     mutating func parseLine() throws(ParserError) -> Line {

@@ -44,14 +44,14 @@ struct Scanner {
             case "#": tokens.append(contentsOf: try readHeading())
             case "*":
                 if peek == "*" {
-                    tokens.append(contentsOf: read(type: .star, type2: .star2, type3: .star3, c: "*"))
+                    tokens.append(contentsOf: try read(type: .star, type2: .star2, type3: .star3, c: "*"))
                 } else {
                     tokens.append(token(.star))
                 }
             case "=": tokens.append(token(.equal))
             case "-":
                 if peek == "-" {
-                    tokens.append(contentsOf: read(type: .minus, type2: .minus2, type3: .minus3, c: "-"))
+                    tokens.append(contentsOf: try read(type: .minus, type2: .minus2, type3: .minus3, c: "-"))
                 } else {
                     tokens.append(token(.minus))
                 }
@@ -59,7 +59,7 @@ struct Scanner {
             case "+": tokens.append(token(.plus))
             case "`":
                 if peek == "`" {
-                    tokens.append(contentsOf: read(type: .tick, type2: .tick2, type3: .tick3, c: "`"))
+                    tokens.append(contentsOf: try read(type: .tick, type2: .tick2, type3: .tick3, c: "`"))
                 } else {
                     tokens.append(token(.tick))
                 }
@@ -72,7 +72,7 @@ struct Scanner {
             case "!": tokens.append(token(.bang))
             case "_":
                 if peek == "_" {
-                    tokens.append(contentsOf: read(type: .underscore, type2: .underscore2, type3: .underscore3, c: "_"))
+                    tokens.append(contentsOf: try read(type: .underscore, type2: .underscore2, type3: .underscore3, c: "_"))
                 } else {
                     tokens.append(token(.underscore))
                 }
@@ -129,7 +129,7 @@ struct Scanner {
         }
     }
     
-    mutating func read(type: TokenType, type2: TokenType, type3: TokenType, c: Character) -> [Token] {
+    mutating func read(type: TokenType, type2: TokenType, type3: TokenType, c: Character) throws(ScannerError) -> [Token] {
         var count = 1
         while peek == c {
             advance()
@@ -138,7 +138,32 @@ struct Scanner {
         if count == 2 {
             return [token(type2)]
         } else if count == 3 {
-            return [token(type3)]
+            if c == "`" {
+                var tokens = [Token]()
+                tokens.append(token(type3))
+                start = position
+                while peek != "`" {
+                    advance()
+                    if peek == "\n" {
+                        line += 1
+                    }
+                }
+                let text = String(input[start..<position])
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                count = 0
+                while peek == "`" {
+                    advance()
+                    count += 1
+                }
+                if count != 3 {
+                    throw .illegalChar
+                }
+                tokens.append(Token(string: text, line: line, type: .text))
+                tokens.append(token(type3))
+                return tokens
+            } else {
+                return [token(type3)]
+            }
         }
         return Array(repeating: token(type), count: count)
     }
