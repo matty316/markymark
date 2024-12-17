@@ -208,7 +208,7 @@ func concat(string1: String, string2: String) {
         "this is not \\*empasis\\*",
         "this aint \\`no code\\`"
     ], [
-        "<p><em> this is not a list</em></p>", //Ummm is this correct? kinda ambiguous. TODO: rtfm
+        "<p><em> this is not a list</em></p>", //Ummm is this correct? kinda ambiguous. TODO: rtfm then add more tests
         "<p>this is not *empasis*</p>",
         "<p>this aint `no code`</p>"
         ]))
