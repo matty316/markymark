@@ -190,4 +190,11 @@ func concat(string1: String, string2: String) {
         #expect(markup.alt == exp.alt)
         #expect(markup.src == exp.src)
     }
+    
+    @Test(arguments: ["\\* this is not a list"])
+    func testEscaping(input: String) throws {
+        let markup = try parse(input: input).elements.first as! Line
+        #expect(markup.lineType == .p)
+        #expect(markup.content.string == "* this is not a list")
+    }
 }

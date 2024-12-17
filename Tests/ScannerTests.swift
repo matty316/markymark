@@ -11,7 +11,7 @@ import Testing
 struct ScannerTests {
     @Test func testScan() throws {
         let input = """
-*=-_.+`\n[]\r\n()<>!\\
+*=-_.+`\n[]\r\n()<>!
 # ## ### #### ##### ###### 
 - -- ---
 * ** ***
@@ -44,7 +44,6 @@ word 2 23
             Token(string: "<", line: 3, type: .lt),
             Token(string: ">", line: 3, type: .gt),
             Token(string: "!", line: 3, type: .bang),
-            Token(string: "\\", line: 3, type: .backslash),
             Token(line: 3, type: .lineEnding),
             Token(line: 4, type: .hash),
             Token(line: 4, type: .hash2),

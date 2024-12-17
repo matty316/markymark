@@ -76,18 +76,18 @@ struct Scanner {
                 } else {
                     tokens.append(token(.underscore))
                 }
-            case "\\": tokens.append(token(.backslash))
+            case "\\":
+                start = position
+                tokens.append(readText())
             case " ": break
             case "\r", "\n", "\r\n":
                 tokens.append(Token(line: line, type: .lineEnding))
                 line += 1
             default:
-                if c.isLetter {
-                    tokens.append(readText())
-                } else if c.isNumber {
+                if c.isNumber {
                     tokens.append(readNum())
                 } else {
-                    throw .illegalChar
+                    tokens.append(readText())
                 }
             }
         }
