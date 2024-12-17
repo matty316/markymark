@@ -184,9 +184,23 @@ func concat(string1: String, string2: String) {
         #expect(html == exp)
     }
     
-    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"]) func testHR(input: String) throws {
+    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"])
+    func testHR(input: String) throws {
         let html = try getHTML(input: input)
         #expect(html == "<hr>")
+    }
+    
+    @Test(arguments: zip([
+        "![alt text](img/image.jpeg)",
+        "![alt text](https://google.com/image.png)"
+    ], [
+        ("alt text", "img/image.jpeg"),
+        ("alt text", "https://google.com/image.png")
+    ]))
+    func testImgs(input: String, exp: (alt: String, src: String)) throws {
+        let html = try getHTML(input: input)
+        let expTag = "<img src=\"\(exp.src)\" alt=\"\(exp.alt)\">"
+        #expect(html == expTag)
     }
     
     @Test func testLinks() throws {

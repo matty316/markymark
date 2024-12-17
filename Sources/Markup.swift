@@ -90,3 +90,11 @@ public struct CodeBlock: Element {
 """
     }
 }
+
+public struct Img: Element {
+    let alt: String
+    let src: String
+    public func html() throws -> String {
+        "<img src=\"\(src)\" alt=\"\(alt)\">"
+    }
+}

@@ -172,8 +172,22 @@ func concat(string1: String, string2: String) {
         #expect(code.text == exp)
     }
 
-    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"]) func testHR(input: String) throws {
+    @Test(arguments: ["\n---", "***", "___", "\n--------", "_________", "****************"])
+    func testHR(input: String) throws {
         let markup = try parse(input: input).elements.first as! Line
         #expect(markup.lineType == .hr)
+    }
+    
+    @Test(arguments: zip([
+        "![alt text](img/image.jpeg)",
+        "![alt text](https://google.com/image.png)"
+    ], [
+        ("alt text", "img/image.jpeg"),
+        ("alt text", "https://google.com/image.png")
+    ]))
+    func testImgs(input: String, exp: (alt: String, src: String)) throws {
+        let markup = try parse(input: input).elements.first as! Img
+        #expect(markup.alt == exp.alt)
+        #expect(markup.src == exp.src)
     }
 }
