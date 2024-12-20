@@ -17,7 +17,7 @@ struct Scanner {
     var position: String.Index
     var line = 1
     var isAtEnd: Bool {
-        position == input.endIndex
+        position >= input.endIndex
     }
     var isAtLineEnding: Bool {
         peek == "\n" || peek == "\r" || peek == "\r\n"

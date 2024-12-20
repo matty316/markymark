@@ -21,6 +21,18 @@ struct Token {
         self.line = line
         self.type = type
     }
+    
+    init(type: TokenType) {
+        self.string = type.rawValue
+        self.line = 0
+        self.type = type
+    }
+    
+    init(string: String) {
+        self.string = string
+        self.type = .text
+        self.line = 0
+    }
 }
 
 enum TokenType: String {
@@ -30,7 +42,7 @@ enum TokenType: String {
     case minus = "-", minus2 = "--", minus3 = "---"
     case underscore = "_", underscore2 = "__", underscore3 = "___"
     case dot = "."
-    case plus = "+"
+    case plus = "+", plus2 = "++", plus3 = "+++"
     case tick = "`", tick2 = "``", tick3 = "```"
     case lbracket = "[", rbracket = "]", lparen = "(", rparen = ")", lt = "<", gt = ">", bang = "!", backslash = "\\"
     case text

@@ -38,7 +38,7 @@ public enum LineType: String {
 public struct Content {
     let string: String
     func html() throws -> String {
-        try Emitter.emitHtml(self)
+        return try LineScanner.text(content: self)
     }
 }
 

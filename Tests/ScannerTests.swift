@@ -89,6 +89,7 @@ func test() {
         
         var s = Scanner(input: input)
         let tokens = try s.scan()
+        #expect(tokens.count == exp.count)
         for (i, token) in tokens.enumerated() {
             let expToken = exp[i]
             #expect(token.line == expToken.line)
