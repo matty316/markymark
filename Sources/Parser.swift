@@ -63,6 +63,7 @@ struct Parser {
         if match([.minus3, .underscore3, .star3]) { return Line(lineType: .hr, content: Content(string: ""))}
         if match([.num]) { return try parseOrderedList() }
         if match([.bang]) { return try parseImg() }
+        if match([.lbracket]) { return try parseLink() }
         return try parseLine()
     }
     
@@ -113,6 +114,12 @@ struct Parser {
         try expect([.tick3])
         try expect([.lineEnding, .eof])
         return CodeBlock(text: text)
+    }
+    
+    mutating func parseLink() throws(ParserError) -> Element {
+        let text = "[\(current.string)"
+        advance()
+        return Line(lineType: .p, content: Content(string: text))
     }
     
     mutating func parseImg() throws(ParserError) -> Element {
