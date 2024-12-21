@@ -117,18 +117,27 @@ struct Parser {
     }
     
     mutating func parseLink() throws(ParserError) -> Element {
+        if match([.lineEnding, .eof]) {
+            return Line(lineType: .p, content: Content(string: "["))
+        }
         let text = "[\(current.string)"
         advance()
         return Line(lineType: .p, content: Content(string: text))
     }
     
     mutating func parseImg() throws(ParserError) -> Element {
-        try expect([.lbracket])
+        guard match([.lbracket]) else {
+            let text = current.string
+            advance()
+            return Line(lineType: .p, content: Content(string: "!\(text)"))
+        }
         let string = current.string
         guard let rbracket = string.range(of: "]"),
               let lparen = string.range(of: "("),
               let rparen = string.range(of: ")") else {
-            throw .invalidToken
+            let text = current.string
+            advance()
+            return Line(lineType: .p, content: Content(string: "![\(text)"))
         }
         
         let alt = String(string[..<rbracket.lowerBound])

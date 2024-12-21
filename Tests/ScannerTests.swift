@@ -84,7 +84,7 @@ func test() {
             Token(string: "23 this is not", line: 15, type: .text),
             Token(line: 15, type: .lineEnding),
             Token(string: "####### not a heading", line: 16, type: .text),
-            Token(line: 16, type: .eof)
+            Token(string: "", line: 16, type: .eof)
         ]
         
         var s = Scanner(input: input)

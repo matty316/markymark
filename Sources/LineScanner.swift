@@ -20,6 +20,10 @@ struct LineScanner {
     var pos: String.Index
     var start: String.Index
     
+    var isAtLineEnding: Bool {
+        peek == "\n" || peek == "\r" || peek == "\r\n" || peek == "\0"
+    }
+    
     static func text(content: Content) throws -> String {
         var ls = LineScanner(content: content)
         let tokens = try ls.scan()
@@ -121,11 +125,14 @@ struct LineScanner {
     }
     
     mutating func readLink() throws(LineScannerError) -> [Token] {
-        while peek != "]" {
+        while peek != "]" && !isAtLineEnding {
             advance()
         }
         
         let text = String(string[string.index(after: start)..<pos])
+        if isAtLineEnding {
+            return[Token(string: "[\(text)")]
+        }
         advance()
         guard peek == "(" else {
             return [Token(string: "[\(text)]")]
@@ -133,10 +140,16 @@ struct LineScanner {
         advance()
         start = pos
         
-        while peek != ")" {
+        while peek != ")" && !isAtLineEnding  {
             advance()
         }
+        
+        
         let link = String(string[start..<pos])
+        if isAtLineEnding {
+            return[Token(string: "[\(text)](\(link)")]
+        }
+        
         advance()
         return [
             Token(type: .lbracket),

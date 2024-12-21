@@ -315,5 +315,17 @@ Maecenas id dignissim tellus. Donec ac magna consectetur, luctus felis id, preti
         let html = try getHTML(input: input)
         #expect(html == exp)
     }
+    
+    @Test(arguments: zip([
+        "[", "![", "!", "!this is a paragraph","[link](", "[link](somethin",
+        "[link", "![this", "![this](", "![this and this](this and this"
+    ],[
+        "<p>[</p>", "<p>![</p>", "<p>!</p>", "<p>!this is a paragraph</p>", "<p>[link](</p>", "<p>[link](somethin</p>",
+        "<p>[link</p>", "<p>![this</p>", "<p>![this](</p>", "<p>![this and this](this and this</p>"
+    ]))
+    func testWeirdStuff(input: String, exp: String) throws {
+        let html = try getHTML(input: input)
+        #expect(html == exp)
+    }
 }
 

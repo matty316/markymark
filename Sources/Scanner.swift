@@ -92,7 +92,7 @@ struct Scanner {
             }
         }
         
-        tokens.append(Token(line: line, type: .eof))
+        tokens.append(Token(string: "", line: line, type: .eof))
         
         return tokens
     }
